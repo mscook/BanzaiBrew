@@ -18,7 +18,7 @@ Tap the kegs::
 
 Install a BanzaiNGS recipe::
 
-    brew install ncbi-blast-binary
+    brew install NCBIBlastBinary
 
 
 Why?
