@@ -9,6 +9,16 @@ class PrinseqLite < Formula
     sha256 "5ff4a5266f79d2b71168cb0ed8f22b8d3e55e6a10e56dbea7061421c747dc44d"
   end
 
+  depends_on "Getopt::Long" => :perl
+  depends_on "Pod::Usage" => :perl
+  depends_on "File::Temp qw(tempfile)" => :perl
+  depends_on "Fcntl qw(:flock SEEK_END)" => :perl
+  depends_on "Cwd" => :perl
+  depends_on "JSON" => :perl
+  depends_on "Cairo"  => :perl
+  depends_on "Statistics::PCA" => :perl
+  depends_on "MIME::Base64" => :perl
+
   def install
     system "chmod +x *.pl"  
     system "mkdir bin"
