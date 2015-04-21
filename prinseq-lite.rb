@@ -6,7 +6,7 @@ class PrinseqLite < Formula
 
   patch do
     url "https://raw.githubusercontent.com/mscook/homebrew-BanzaiNGS/master/patches/prinseq-lite-Declare-perl-env-properly.patch"
-    sha256 "1fd60e73ff635aa9748cd6135ea3bbcdf6ba7500"
+    sha256 "5ff4a5266f79d2b71168cb0ed8f22b8d3e55e6a10e56dbea7061421c747dc44d"
   end
 
   def install
