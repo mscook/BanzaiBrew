@@ -1,4 +1,4 @@
-class PrinseqLite < Formula
+class Prinseq < Formula
   homepage "http://prinseq.sourceforge.net"
   url "https://downloads.sourceforge.net/project/prinseq/standalone/prinseq-lite-0.20.4.tar.gz"
   version "0.20.4"
@@ -8,6 +8,9 @@ class PrinseqLite < Formula
     url "https://raw.githubusercontent.com/mscook/homebrew-BanzaiNGS/master/patches/prinseq-lite-Declare-perl-env-properly.patch"
     sha256 "5ff4a5266f79d2b71168cb0ed8f22b8d3e55e6a10e56dbea7061421c747dc44d"
   end
+
+  depends_on "cairo"
+  # had to apt-get install cairo
 
   depends_on "Getopt::Long" => :perl
   depends_on "Pod::Usage" => :perl
@@ -23,10 +26,19 @@ class PrinseqLite < Formula
     system "chmod +x *.pl"  
     system "mkdir bin"
     system "cp *.pl bin"
+    # Note still end up with *.pl as default
     system "ln -s bin/prinseq-graphs-noPCA.pl bin/prinseq-graphs-noPCA"
     system "ln -s bin/prinseq-graphs.pl bin/prinseq-graphs"
     system "ln -s bin/prinseq-lite.pl bin/prinseq-lite"
     prefix.install Dir["*"]
+  end
+
+  def caveats
+    <<-EOS.undent
+      NOTES:
+        * CPAN installation of cairo perl seems to fail with brew cairo. Solved using 'sudo apt-get install libcairo2-dev'
+        * The PRINSEQ Perl executables end up with .pl extensions 
+    EOS
   end
 
   test do
