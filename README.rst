@@ -1,5 +1,5 @@
-BanzaiBrew
-==========
+homebrew-BanzaiNGS
+==================
 
 Borrowing from Torsten Seemann - get Banzai Pipeline dependencies as brew 
 recipes.
@@ -14,9 +14,9 @@ Tap the kegs::
     brew tap homebrew/science
     brew tap chapmanb/cbl
     brew tap tseemann/homebrew-bioinformatics-linux
-    brew tap mscook/BanzaiBrew
+    brew tap mscook/BanzaiNGS
 
-Install a BanzaiBrew recipe::
+Install a BanzaiNGS recipe::
 
     brew install ncbi-blast-binary
 
