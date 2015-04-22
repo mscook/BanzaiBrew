@@ -45,6 +45,7 @@ class Nesoni < Formula
         * SplitsTree4
       2) We also ignore R libraries (we don't do RNA-Seq)
     EOS
+  end
 
 
   test do
