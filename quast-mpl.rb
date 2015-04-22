@@ -1,4 +1,4 @@
-class Quast < Formula
+class QuastMpl < Formula
   homepage "http://bioinf.spbau.ru/en/quast"
   url "https://downloads.sourceforge.net/project/quast/quast-2.3.tar.gz"
   sha1 "9bf176f852cf1b77f201b15e7d9262ae29cff727"
