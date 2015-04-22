@@ -7,7 +7,7 @@ class Nesoni < Formula
   # For matplotlib
   depends_on "freetype"
   depends_on "samtools"
-  depends on "SHRiMP"
+  depends_on "SHRiMP"
 
   resource "numpy" do
     url "https://pypi.python.org/packages/source/n/numpy/numpy-1.9.2.tar.gz"
