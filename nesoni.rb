@@ -4,6 +4,8 @@ class Nesoni < Formula
   version "0.130"
   sha1 "4077a992dfc519f3bd6a73fe76e4b90eb5ccc705"
 
+  depends_on "freetype"
+
   resource "numpy" do
     url "https://pypi.python.org/packages/source/n/numpy/numpy-1.9.2.tar.gz"
     sha1 "86b4414cd01c4244141c59ea476ca8fdad8e9be2"
