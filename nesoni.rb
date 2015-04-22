@@ -4,7 +4,10 @@ class Nesoni < Formula
   version "0.130"
   sha1 "4077a992dfc519f3bd6a73fe76e4b90eb5ccc705"
 
+  # For matplotlib
   depends_on "freetype"
+  depends_on "samtools"
+  depends on "SHRiMP"
 
   resource "numpy" do
     url "https://pypi.python.org/packages/source/n/numpy/numpy-1.9.2.tar.gz"
