@@ -22,7 +22,7 @@ class Nesoni < Formula
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[six pycrypto keyring parsedatetime python-dateutil pytz tzlocal].each do |r|
+    %w[numpy matplotlib biopython].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
