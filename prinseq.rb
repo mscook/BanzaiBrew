@@ -9,9 +9,6 @@ class Prinseq < Formula
     sha256 "5ff4a5266f79d2b71168cb0ed8f22b8d3e55e6a10e56dbea7061421c747dc44d"
   end
 
-  depends_on "cairo"
-  # had to apt-get install cairo
-
   depends_on "Getopt::Long" => :perl
   depends_on "Pod::Usage" => :perl
   depends_on "File::Temp qw(tempfile)" => :perl
