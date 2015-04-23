@@ -6,6 +6,8 @@ class NcbiBlastBinary < Formula
 
   depends_on "List::MoreUtils" => :perl 
 
+  #TODO apply patch for /usr/bin/env perl
+
   def install
     prefix.install Dir["*"]
   end
