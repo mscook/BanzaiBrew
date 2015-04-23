@@ -1,8 +1,8 @@
 class BanzaiNgs < Formula
   homepage "https://github.com/mscook/Banzai-MicrobialGenomics-Pipeline"
   url "https://github.com/mscook/Banzai-MicrobialGenomics-Pipeline/archive/master.zip"
-  version "0.0.3"
-  sha1 "174ed265df534c3c773be7efc1c3963ea5e989b6"
+  version "0.0.4"
+  sha1 "95f0c43492e6c69267ba1cdd034e5f56380362ae"
 
   ###############################
   # Quality control dependencies
