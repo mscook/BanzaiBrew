@@ -1,4 +1,4 @@
-class BanzaiNGS < Formula
+class BanzaiNgs < Formula
   homepage "https://github.com/mscook/Banzai-MicrobialGenomics-Pipeline"
   url "https://github.com/mscook/Banzai-MicrobialGenomics-Pipeline/archive/master.zip"
   version "0.0.3"
