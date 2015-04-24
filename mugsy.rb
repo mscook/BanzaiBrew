@@ -12,6 +12,12 @@ class Mugsy < Formula
 
 
   def install
+    system "export MUGSY_INSTALL=/home/vagrant/.linuxbrew/bin"
+    system "export PATH=$MUGSY_INSTALL:$MUGSY_INSTALL/mapping:$PATH"
+    system "export PERL5LIB=$MUGSY_INSTALL/perllibs"
+    system "echo 'export MUGSY_INSTALL=/home/vagrant/.linuxbrew/bin' >> ~/.bashrc"
+    system "echo 'export PATH=$MUGSY_INSTALL:$MUGSY_INSTALL/mapping:$PATH' >> ~/.bashrc"
+    system "echo 'export PERL5LIB=$MUGSY_INSTALL/perllibs' >> ~/.bashrc"
     system "mkdir bin"
     system "mv *.pl *.sh mugsy mugsyWGA synchain-mugsy bin/"
     system "mv MUMmer3.20 #{HOMEBREW_PREFIX}/bin"
@@ -22,10 +28,7 @@ class Mugsy < Formula
   def caveats
     <<-EOS.undent
     
-    Please: 
-        "echo 'export MUGSY_INSTALL=#{HOMEBREW_PREFIX}/bin >> ~/.bashrc'"
-        "echo 'export PATH=$MUGSY_INSTALL:$MUGSY_INSTALL/mapping:$PATH >> ~/.bashrc'"
-        "echo 'export PERL5LIB=$MUGSY_INSTALL/perllibs >> ~/.bashrc'"
+    You uninstall you will need to manually clean up #{HOMEBREW_PREFIX}/bin/MUMmer3.20
     EOS
   end
 
