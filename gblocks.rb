@@ -5,10 +5,10 @@ class Gblocks < Formula
   sha1 "149d8ae44346eab8e39b71309aa8961f37ffde76"
 
   def install
-      prefix.install Gblocks
+      prefix.install "Gblocks"
   end
 
 
   test do
-    end
+  end
 end
