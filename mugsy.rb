@@ -7,7 +7,7 @@ class Mugsy < Formula
 
   patch do
     url "https://raw.githubusercontent.com/mscook/homebrew-BanzaiNGS/master/patches/mugsy-Declare-perl-env-properly.patch"
-    # Update: sha256 "5ff4a5266f79d2b71168cb0ed8f22b8d3e55e6a10e56dbea7061421c747dc44d"
+    sha256 "3a1749e8d7fa9112ca54f02440bb71c1b498f7dcb514d6508e1ac3a6e911b8a0"
   end
 
 
