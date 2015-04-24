@@ -28,8 +28,7 @@ class BanzaiNgs < Formula
   depends_on "spades-binary"
   #depends_on "ray"
   #depends_on "newbler" <--- LOL LOL LOL
-  brew install quast
-
+  depends_on "quast-mpl"
 
 
   def install
