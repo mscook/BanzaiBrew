@@ -4,8 +4,11 @@ class Gblocks < Formula
   url "http://molevol.cmima.csic.es/castresana/Gblocks/Gblocks_Linux64_0.91b.tar.Z"
   sha1 "149d8ae44346eab8e39b71309aa8961f37ffde76"
 
+
   def install
-      prefix.install "Gblocks"
+    system "mkdir bin"
+    system "mv Gblocks bin"
+    prefix.install Dir["*"]
   end
 
 
