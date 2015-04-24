@@ -13,7 +13,8 @@ class Mugsy < Formula
 
   def install
     system "mkdir bin"
-    system "mv MUMmer3.20 *.pl *.sh mugsy mugsyWGA synchain-mugsy bin/"
+    system "mv *.pl *.sh mugsy mugsyWGA synchain-mugsy bin/"
+    system "mv MUMmer3.20 #{HOMEBREW_PREFIX}/bin"
     prefix.install Dir["*"]
   end
 
