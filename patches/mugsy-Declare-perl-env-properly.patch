@@ -1,0 +1,99 @@
+From 5340cb388b2f771e3e19ea0093155d94e6cee5c6 Mon Sep 17 00:00:00 2001
+From: Mitchell J Stanton-Cook <m.stantoncook@gmail.com>
+Date: Fri, 24 Apr 2015 14:47:06 +1000
+Subject: [PATCH] /usr/bin/perl --> /usr/bin/env/perl
+
+---
+ MUMmer3.20/mummerplot | 2 +-
+ MUMmer3.20/nucmer     | 2 +-
+ fixMAFnames.pl        | 2 +-
+ maf2fasta.pl          | 2 +-
+ mugsy                 | 2 +-
+ plot.pl               | 2 +-
+ splitmaf.pl           | 2 +-
+ xmfa2maf.pl           | 2 +-
+ 8 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/MUMmer3.20/mummerplot b/MUMmer3.20/mummerplot
+index 07fbacc..04b4663 100755
+--- a/MUMmer3.20/mummerplot
++++ b/MUMmer3.20/mummerplot
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/usr/bin/env perl
+ 
+ ################################################################################
+ #   Programmer: Adam M Phillippy, The Institute for Genomic Research
+diff --git a/MUMmer3.20/nucmer b/MUMmer3.20/nucmer
+index f4e13c7..bdee13a 100755
+--- a/MUMmer3.20/nucmer
++++ b/MUMmer3.20/nucmer
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/usr/bin/env perl
+ 
+ #-------------------------------------------------------------------------------
+ #   Programmer: Adam M Phillippy, The Institute for Genomic Research
+diff --git a/fixMAFnames.pl b/fixMAFnames.pl
+index 318b2a8..8755dd2 100755
+--- a/fixMAFnames.pl
++++ b/fixMAFnames.pl
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/usr/bin/env perl
+ 
+ use strict;
+ 
+diff --git a/maf2fasta.pl b/maf2fasta.pl
+index b29e41a..bfef174 100755
+--- a/maf2fasta.pl
++++ b/maf2fasta.pl
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/usr/bin/env perl
+ #Convert MAF to FASTA
+ #Optionally only convert blocks that contain label 
+ #./maf2fasta.pl [label] < maf > fasta
+diff --git a/mugsy b/mugsy
+index 38846b9..b298591 100755
+--- a/mugsy
++++ b/mugsy
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/usr/bin/env perl
+ if(! -d $ENV{'MUGSY_INSTALL'}){
+     my $default_install = "/usr/local/projects/angiuoli/mugsy_trunk/";
+     if( -d $default_install){
+diff --git a/plot.pl b/plot.pl
+index bd5d5d0..9504f1a 100755
+--- a/plot.pl
++++ b/plot.pl
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/usr/bin/env perl
+ 
+ #./plot.pl outputprefix reforganismname ps,xll
+ #Eg. cat /tmp/testfilter.maf | ./plot.pl /tmp/testfilter genome2 mugsy.out > out.gp
+diff --git a/splitmaf.pl b/splitmaf.pl
+index 25a8524..086efe2 100755
+--- a/splitmaf.pl
++++ b/splitmaf.pl
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/usr/bin/env perl
+ 
+ #Accepts pairwise maf only
+ #./splitmaf.pl outputprefix < input.maf
+diff --git a/xmfa2maf.pl b/xmfa2maf.pl
+index b20389e..878c73b 100755
+--- a/xmfa2maf.pl
++++ b/xmfa2maf.pl
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/usr/bin/env perl
+ #Utility for converting output of Mauve XMFA to MAF format
+ 
+ #USAGE: ./xmfa2maf seqs.len < aln.xmfa > aln.maf
+-- 
+2.1.3.36.g8e36a6d
+
