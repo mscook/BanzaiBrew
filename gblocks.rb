@@ -13,5 +13,6 @@ class Gblocks < Formula
 
 
   test do
+    assert_match "GBLOCKS 0.91b", shell_output("Gblocks 2>&1", 1)
   end
 end
