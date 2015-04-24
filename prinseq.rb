@@ -24,6 +24,7 @@ class Prinseq < Formula
     system "mkdir bin"
     system "cp *.pl bin"
     # Note still end up with *.pl as default
+    # Quast has an example of how to do this
     system "ln -s bin/prinseq-graphs-noPCA.pl bin/prinseq-graphs-noPCA"
     system "ln -s bin/prinseq-graphs.pl bin/prinseq-graphs"
     system "ln -s bin/prinseq-lite.pl bin/prinseq-lite"
