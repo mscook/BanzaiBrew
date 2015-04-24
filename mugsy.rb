@@ -12,9 +12,6 @@ class Mugsy < Formula
 
 
   def install
-    system "export MUGSY_INSTALL=#{HOMEBREW_PREFIX}/bin"
-    system "export PATH=$MUGSY_INSTALL:$MUGSY_INSTALL/mapping:$PATH"
-    system "export PERL5LIB=$MUGSY_INSTALL/perllibs"
     system "echo 'export MUGSY_INSTALL=#{HOMEBREW_PREFIX}/bin > ~/.bashrc'"
     system "echo 'export PATH=$MUGSY_INSTALL:$MUGSY_INSTALL/mapping:$PATH > ~/.bashrc'"
     system "echo 'export PERL5LIB=$MUGSY_INSTALL/perllibs > ~/.bashrc'"
