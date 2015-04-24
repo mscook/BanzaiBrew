@@ -21,6 +21,16 @@ class BanzaiNgs < Formula
   depends_on "vcftools"
   depends_on "picard-tools"
 
+  #########################
+  #  Assembly dependencies
+  #########################
+  depends_on "velvet" => ["with-maxkmerlength=249"]
+  depends_on "spades-binary"
+  #depends_on "ray"
+  #depends_on "newbler" <--- LOL LOL LOL
+  brew install quast
+
+
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
