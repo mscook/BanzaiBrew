@@ -26,7 +26,7 @@ class Contiguator < Formula
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[numpy matplotlib].each do |r|
+    %w[numpy biopython].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
@@ -52,5 +52,6 @@ class Contiguator < Formula
 
 
   test do
+    assert_match "Checking software requirements", shell_output("CONTIGuator 2>&1", 1)
   end
 end
