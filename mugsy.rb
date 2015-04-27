@@ -12,6 +12,7 @@ class Mugsy < Formula
 
 
   def install
+    # Broken !!! -> mapping? +/-perllibs
     system "echo 'export MUGSY_INSTALL=/home/vagrant/.linuxbrew/bin' >> ~/.bashrc"
     system "echo 'export PATH=$MUGSY_INSTALL:$MUGSY_INSTALL/mapping:$PATH' >> ~/.bashrc"
     system "echo 'export PERL5LIB=$MUGSY_INSTALL/perllibs' >> ~/.bashrc"
