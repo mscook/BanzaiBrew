@@ -21,14 +21,45 @@ class BanzaiNgs < Formula
   depends_on "vcftools"
   depends_on "picard-tools"
 
-  #########################
-  #  Assembly dependencies
-  #########################
+  #######################
+  # Assembly dependencies
+  #######################
   depends_on "velvet" => ["with-maxkmerlength=249"]
   depends_on "spades-binary"
   #depends_on "ray"
   #depends_on "newbler" <--- LOL LOL LOL
   depends_on "quast-mpl"
+
+  #######################
+  # Mapping  dependencies
+  #######################
+  #depends_on "bwa"
+  #depends_on "samtools"
+  #depends_on "nesoni"
+  depends_on "qualimap"
+
+  ##################
+  # WGA dependencies
+  ##################
+  depends_on "mugsy"
+  depends_on "gblocks"
+
+  #########################
+  # Annotation dependencies
+  #########################
+  depends_on "prokka-banzai"
+  depends_on "ratt"
+  depends_on "geneprimp"
+  #depends_on "interproscan"
+
+  #########################
+  # Ordering dependencies
+  #########################
+  depends_on "mauve"
+  depends_on "abacas"
+  depends_on "contiguator"
+
+
 
 
   def install
