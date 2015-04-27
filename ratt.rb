@@ -7,14 +7,18 @@ class Ratt < Formula
   head 'https://svn.code.sf.net/p/ratt/code/'
   
   patch do
-    url "https://raw.githubusercontent.com/mscook/homebrew-BanzaiNGS/master/patches/prinseq-lite-Declare-perl-env-properly.patch"
-    sha256 "5ff4a5266f79d2b71168cb0ed8f22b8d3e55e6a10e56dbea7061421c747dc44d"
+    url "https://raw.githubusercontent.com/mscook/homebrew-BanzaiNGS/master/patches/RATT-Structure-like-a-package-Declare-perl-env-properly.patch"
+    sha256 "56d8b7e744768a84856aefd868f31bfcae1a278c2fde4f50b0aaecc54dab24dc"
   end
-
 
   depends_on "mummer"
 
   def install
+    system "echo 'export RATT_HOME=#{HOMEBREW_PREFIX}/bin' >> ~/.bashrc"
+    #system "echo 'export PERL5LIB=$MUGSY_INSTALL/perllibs' >> ~/.bashrc"
+    system "mkdir bin"
+    system "mv *.pl *.sh bin/"
+    prefix.install Dir["*"]
   end
 end
 
