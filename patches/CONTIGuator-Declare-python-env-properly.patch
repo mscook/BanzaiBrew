@@ -1,0 +1,1299 @@
+From 784ee3f89ed814975022765f6a96c188d5ccb27b Mon Sep 17 00:00:00 2001
+From: Mitchell J Stanton-Cook <m.stantoncook@gmail.com>
+Date: Mon, 27 Apr 2015 14:50:46 +1000
+Subject: [PATCH 1/1] Tidy up
+
+---
+ CONTIGuator.py | 374 ++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 187 insertions(+), 187 deletions(-)
+ mode change 100644 => 100755 CONTIGuator.py
+
+diff --git a/CONTIGuator.py b/CONTIGuator.py
+old mode 100644
+new mode 100755
+index 2db968c..44de280
+--- a/CONTIGuator.py
++++ b/CONTIGuator.py
+@@ -1,4 +1,4 @@
+-#! /usr/bin/python
++#!/usr/bin/env python
+ """
+ Bacterial comparative genomics finishing tool for draft structural genomics insights.
+ """
+@@ -85,7 +85,7 @@ def Notify(msg, error = False):
+     Launch a notification (may not work on systems without libnotify-bin)
+     '''
+     path = os.path.split(os.path.realpath(__file__))[0]
+-    
++
+     if error:
+         icon = 'error'
+     elif 'icon.png' in path:
+@@ -93,7 +93,7 @@ def Notify(msg, error = False):
+         icon = os.path.abspath(icon)
+     else:
+         icon = 'info'
+-    
++
+     cmd = '''notify-send -t 2000 -u low -i %s "CONTIGuator" "%s"'''%(icon,msg)
+     subprocess.call(cmd,shell=(sys.platform!="win32"),
+                         stdin=subprocess.PIPE,stdout=subprocess.PIPE,
+@@ -144,7 +144,7 @@ class ContigProfile:
+                       ' '.join(['Query end:',str(self.qend)]),
+                       ' '.join(['Subject start:',str(self.sstart)]),
+                       ' '.join(['Subject end:',str(self.send)])
+-                              ]) 
++                              ])
+         def setDuplicated(self):
+             '''
+             Signal this hit as duplicated
+@@ -176,24 +176,24 @@ class ContigProfile:
+         self._nonhitlist = []
+         #
+         self._strand = None
+-        
++
+         # If False, the hits were in both configurations
+         self._easyStrand = None
+-        
++
+         self._coverage = 0.0
+-        
++
+         # Cluster hits by distance
+         self._cores = []
+-        
++
+         # The biggest core
+         self._core = []
+-        
++
+         # Is splitted?
+         self._splitted = False
+-        
++
+         # Is scattered?
+         self._scattered = False
+-        
++
+         # Log
+         self.mylog = None
+         if logObj is None:
+@@ -260,23 +260,23 @@ class ContigProfile:
+         the profile contains only that kind of hit
+         The hits are then flagged for duplication,
+         so they can be discarded later
+-        
++
+         Returns True if it has to be discarded
+         Returns False if it can be kept
+         '''
+         duplicated = []
+         unique = []
+-        
++
+         # First check in the query perspective
+         for hit in self.getHits():
+             # Cycle over the hits again
+             for hit1 in self.getHits():
+-                startDist = abs(hit.qstart - 
++                startDist = abs(hit.qstart -
+                                 hit1.qstart)
+-                endDist = abs(hit.qend - 
++                endDist = abs(hit.qend -
+                                 hit1.qend)
+                 if (startDist <= threshold
+-                    and endDist <= threshold 
++                    and endDist <= threshold
+                     and hit != hit1):
+                     # Here's one duplicated hit!
+                     if hit not in duplicated:
+@@ -285,17 +285,17 @@ class ContigProfile:
+                     if hit1 not in duplicated:
+                         hit1.setDuplicated()
+                         duplicated.append(hit1)
+-        
++
+         # Second check in the reference perspective
+         for hit in self.getHits():
+             # Cycle over the hits again
+             for hit1 in self.getHits():
+-                startDist = abs(hit.sstart - 
++                startDist = abs(hit.sstart -
+                                 hit1.sstart)
+-                endDist = abs(hit.send - 
++                endDist = abs(hit.send -
+                                 hit1.send)
+                 if (startDist <= threshold
+-                    and endDist <= threshold 
++                    and endDist <= threshold
+                     and hit != hit1):
+                     # Here's one duplicated hit!
+                     if hit not in duplicated:
+@@ -304,12 +304,12 @@ class ContigProfile:
+                     if hit1 not in duplicated:
+                         hit1.setDuplicated()
+                         duplicated.append(hit1)
+-        
++
+         # Put the saved hits in another list
+         for hit in self.getHits():
+             if not hit.isDuplicated():
+                 unique.append(hit)
+-        
++
+         # Check if we have a "only duplicated hits" contig
+         if len(duplicated) > 0 and len(unique) == 0:
+             self.mylog.WriteLog('WRN','Contig '+self.name+
+@@ -322,7 +322,7 @@ class ContigProfile:
+         '''
+         start = 1
+         nName = self.name+'_N'
+-        index = 1 
++        index = 1
+         for hit in self.orderQHits():
+             # Avoid really small hits
+             if hit.qstart > start and hit.qstart - start > 1:
+@@ -378,7 +378,7 @@ class ContigProfile:
+         # Near the start?
+         if start <= refLen*0.05:
+             bStart = True
+-        
++
+         bEnd = False
+         hit = self.orderSHits()[-1]
+         if hit.isForward():
+@@ -390,7 +390,7 @@ class ContigProfile:
+         # Near the end?
+         if (refLen - stop) <= refLen*0.05:
+             bEnd = True
+-        
++
+         if bStart and bEnd:
+             self.mylog.WriteLog('DEV', self.name+' has hits at both borders'+
+                                 ' of reference: '+self.target)
+@@ -406,11 +406,11 @@ class ContigProfile:
+         maxdist = 10000
+         if refLen < maxdist * 1.25:
+             maxdist = refLen*0.10
+-        
++
+         cores = []
+-        
++
+         b = True
+-        pstop = 0 
++        pstop = 0
+         for hit in self.orderSHits():
+             if b:
+                 ctemp = []
+@@ -425,9 +425,9 @@ class ContigProfile:
+                 ctemp.append(hit)
+             pstop = hit.getSEnd()
+         if not b:
+-            cores.append(ctemp)   
++            cores.append(ctemp)
+         self._cores=cores
+-                        
++
+         self.mylog.WriteLog('DEV', self.name+' has '+str(len(self._cores))+
+                         ' contiguous regions')
+     def hasOneCore(self):
+@@ -488,7 +488,7 @@ class ContigProfile:
+         # Compute the core contiguous hits
+         if self._core == []:
+             self.generateBiggestCore()
+-        
++
+         coreOrder = self.orderQCore()
+         return coreOrder[0].qstart - 1, self.length - coreOrder[-1].qend
+     def generateCoreStrand(self):
+@@ -498,7 +498,7 @@ class ContigProfile:
+         # Compute the core contiguous hits
+         if self._core == []:
+             self.generateBiggestCore()
+-            
++
+         # How many hits?
+         iTotal = float(len(self._core))
+         iPlus = 0.0
+@@ -531,15 +531,15 @@ class ContigProfile:
+         # Compute the core contiguous hits
+         if self._core == []:
+             self.generateBiggestCore()
+-        
++
+         if len(self._hitslist) == 1:
+             self.mylog.WriteLog('DEV', self.name+' one hit contig')
+             # Easy: just return the start and stop
+             return self.getTiling()
+-        
++
+         # Get the hits ordered by reference
+         ordHits = self.orderSHits()
+-        
++
+         # First and last hits: get start and stop
+         start = ordHits[0]
+         stop = ordHits[-1]
+@@ -551,13 +551,13 @@ class ContigProfile:
+             iStop = stop.send
+         else:
+             iStop = stop.sstart
+-        
++
+         # Profile length comparable to contig size?
+         # The biggest portion of the contig mapped is taken as reference
+         # The profile length should reside in 90-110 %
+         # of the biggest portion
+         refSpan = iStop - iStart
+-        if (refSpan <= (self.getContigMappedLen() * 1.10) and 
++        if (refSpan <= (self.getContigMappedLen() * 1.10) and
+             refSpan >= (self.getContigMappedLen() * 0.90)):
+             self.mylog.WriteLog('DEV', self.name+' contig with contiguos hits')
+             return self.getTiling()
+@@ -565,12 +565,12 @@ class ContigProfile:
+             # This profile may be problematic:
+             # 1- Could be a splitted contig (overlapping the reference start)
+             # 2- There could be one or more hits really distant from the "core"
+-            
++
+             # Contig length compared to reference length
+             refProp = self.length/float(refLen)
+-            
++
+             # Consider if this contig has hits both near to start and
+-            # to end of reference 
++            # to end of reference
+             bBorder = self.hasBorderHits(refLen)
+             # Is this contig so big is size is comparable to reference?
+             if refProp >= 0.9:
+@@ -594,7 +594,7 @@ class ContigProfile:
+                         ' contig with scattered hits')
+                     self._scattered = True
+                     return self.getTiling()
+-                            
++
+                 # Splitted contig!
+                 self.mylog.WriteLog('DEV', self.name+
+                     ' contig overlapping the starting point of the reference')
+@@ -626,7 +626,7 @@ class MapItem:
+                   ' '.join(['Strand:',str(self.strand)])
+                           ])
+     def __len__(self):
+-        return len(self.seq) 
++        return len(self.seq)
+ 
+ class ContiguatorCarrier:
+     def __init__(self, sCont):
+@@ -757,7 +757,7 @@ class PrimerProduct:
+                           # PCR product
+                           str(self.__len__()),
+                           str(self.getProduct())
+-                          ]) 
++                          ])
+     def setParentSeq(self,seq):
+         '''
+         Set the sequence from which the primer has been taken
+@@ -1483,7 +1483,7 @@ def getOptions():
+                 default=False,
+                 help='Use blastn instead of megablast (may be more sensitive)')
+     group2.add_option('-t', '--threads', action="store", type='int', dest='iThreads', default=1,
+-                help='Threads used by Blast.')              
++                help='Threads used by Blast.')
+     parser.add_option_group(group2)
+ 
+     # Mode: Launch Blast or parse ready-made results?
+@@ -1504,7 +1504,7 @@ def getOptions():
+     group4.add_option('-B', '--bigHitLength', action="store", type='int', dest='iMinBigHit', default=1100,
+                 help='Minimal length of a significant blast hit (suggested bigger than 1100bp) [Default: 1100].')
+     group4.add_option('-R', '--multiRepliconRatio', action="store", type='float', dest='fMUltiRep', default=1.5,
+-                help='Minimum ratio  [Default: 1.5].')    
++                help='Minimum ratio  [Default: 1.5].')
+     parser.add_option_group(group4)
+ 
+     # Primer picking?
+@@ -1605,7 +1605,7 @@ def ContigProfiler(options,mylog):
+     if options.fMUltiRep <= 1:
+         mylog.WriteLog('WRN', 'Minimum Multiple replicon ratio should be greater than')
+         sys.stderr.write(strftime("%H:%M:%S")+
+-        ColorOutput(' Minimum Multiple replicon ratio should be greater than 1\n','WRN'))    
++        ColorOutput(' Minimum Multiple replicon ratio should be greater than 1\n','WRN'))
+     if options.iThreads < 1:
+         mylog.WriteLog('WRN', 'The number of threads used by Blast should be higher than 1')
+         sys.stderr.write(strftime("%H:%M:%S")+
+@@ -1618,9 +1618,9 @@ def ContigProfiler(options,mylog):
+     dReferencesLen={}
+ 
+     ###############################
+-    # Keep track of contigs sizes #                            
++    # Keep track of contigs sizes #
+     ###############################
+-    
++
+     dContigs = {}
+     for seq in SeqIO.parse(open(options.ContigFile), 'fasta'):
+         dContigs[seq.id] = len(seq)
+@@ -1831,13 +1831,13 @@ def ContigProfiler(options,mylog):
+             # We'll take the best hit, only and only
+             # if there is a big difference
+             bAssigned = 0
+-            
++
+             # If there is just one reference in the dCDetails dict
+             # there's no need to check!
+             if len(dCDetails[seq_record.id]) == 1:
+                 dCAttribution[seq_record.id] = dCDetails[seq_record.id][0].keys()[0]
+                 continue
+-            
++
+             for dRef in dCDetails[seq_record.id]:
+                 currObj = dRef[dRef.keys()[0]]
+                 bBestCandidate = 0
+@@ -1889,7 +1889,7 @@ def ContigProfiler(options,mylog):
+             del dCDetails[seq_record.id]
+         else:
+             dCAttribution[seq_record.id] = lMultiple[0]
+-    
++
+     #############################
+     ##### Contig profiling! #####
+     #############################
+@@ -1924,7 +1924,7 @@ def ContigProfiler(options,mylog):
+                 tHit.append('-')
+             else:
+                 tHit.append('+')
+-        
++
+         lQueryOrder=copy.deepcopy(lHits)
+         lSubjectOrder=copy.deepcopy(lHits)
+         lQueryOrder=sorted(lQueryOrder, key=lambda lQueryOrder: lQueryOrder[0])
+@@ -1965,11 +1965,11 @@ def ContigProfiler(options,mylog):
+             hitName = sContig+'_'+str(iHit)
+             cprof.addHit(hitName,hit[0],hit[1],hit[2],hit[3],hit[4],hit[5])
+             iHit += 1
+-            
++
+         coverage = dCDetails[sContig][0][sCurrRef][1]
+         #cprof.setStrand(strand, easyStrand)
+         cprof.setCoverage(coverage)
+-        
++
+         ###########################
+         ####### Last check! #######
+         ###########################
+@@ -1992,18 +1992,18 @@ def ContigProfiler(options,mylog):
+                 oCFs.profiles.remove(cprof)
+         else:
+             oCFs.addProfile(cprof)
+-    
++
+     # Remove the discarded contigs
+     for profName in lDiscarded:
+         del dCDetails[profName]
+-    
++
+     # Log details
+     for cprof in oCFs.profiles:
+         mylog.WriteLog('DEV','Profile: '+str(cprof))
+-    
++
+     for sRef in lReferences:
+         oCFs.setRefName(sRef, dRefFiles[sRef])
+-        
++
+     # Filtered Contig
+     for sRef in lReferences:
+         sFiltered = (options.ContigFile.split('/')[-1]+sRef.replace('|', '_')+
+@@ -2075,7 +2075,7 @@ def ContigProfiler(options,mylog):
+             fExcluded.write('>'+seq_record.id+'\n')
+             Write80CharFile(fExcluded, str(seq_record.seq))
+             continue
+-    
++
+     return oCFs
+ 
+ def LogMap(Map,name,mylog):
+@@ -2090,22 +2090,22 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+     mylog.WriteLog('INF', 'Writing the map to files')
+     sys.stdout.write(strftime("%H:%M:%S")+
+                         ' Writing the map to files\n')
+-    
++
+     from Bio import SeqIO
+     from Bio import Alphabet
+     from Bio.Seq import Seq
+     from Bio.SeqRecord import SeqRecord
+     from Bio import SeqFeature
+-    
++
+     # PseudoContig name
+     PName = 'PseudoContig_'+oCFs.refNames[sRef]
+-    
++
+     # Pseudocontig Sequence
+     MapSeq = SeqRecord(Seq('',Alphabet.IUPAC.IUPACUnambiguousDNA()),
+                     id = PName,
+                     description = 'PseudoContig map generated by CONTIGuator '+
+                     __version__)
+-    
++
+     # Add the Citation
+     CNTGref = SeqFeature.Reference()
+     CNTGref.authors = ('Marco Galardini, Emanuele G Biondi, '+
+@@ -2115,9 +2115,9 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+     CNTGref.title = ('CONTIGuator: a bacterial genomes finishing tool'+
+                      ' for structural insights on draft genomes')
+     CNTGref.pubmed_id = '21693004'
+-    
++
+     MapSeq.annotations['references']=[CNTGref]
+-    
++
+     # Outputs
+     seRef = 'Reference.embl'
+     oCFs.addACTFile(seRef)
+@@ -2152,18 +2152,18 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+     oCFs.setCrunchFile(sRef,sAlterC)
+     oCFs.setPContigFile(sRef,sAlterPC)
+     oCFs.setLastPCR(sRef, sLastPCR)
+-        
++
+     # Read the contig file and build a DB as well
+     fContig = open(sContig, 'r')
+     dContig = {}
+     for seq in SeqIO.parse(fContig, 'fasta'):
+         dContig[seq.id] = seq
+-        
++
+     # Read the reference file and build yet another DB
+     # It will contain just one entry
+     fRef = open(sRef, 'r')
+     seqRef = SeqIO.parse(fRef, 'fasta').next()
+-    
++
+     # Print PseudoContig(s)
+     # Print Crunch file
+     # Print tab(s) file
+@@ -2178,7 +2178,7 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+         fASeqRef = open(sASeqRef,'w')
+         fNSeqRef = open(sNSeqRef,'w')
+     PContig = ''
+-    
++
+     # Build a DB of Reference unaligned regions
+     if bMoreOutputs:
+         # Only if needed of course!
+@@ -2215,20 +2215,20 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+                                        hit.strand])+
+                                     '\n')
+             fNSeqRef.write('>'+hit.name+'\n')
+-            Write80CharFile(fNSeqRef, 
++            Write80CharFile(fNSeqRef,
+                             seqRef.seq[hit.sstart-1:
+                                        hit.send])
+         # Log
+         mylog.WriteLog('DEV', sRef+' contains '+str(len(nonAligned))+' regions'+
+                        'with no hits mapped')
+         for hit in nonAligned:
+-            mylog.WriteLog('DEV', str(hit))        
+-    
++            mylog.WriteLog('DEV', str(hit))
++
+     bStart = True
+     for cMap in ContigsMap:
+         # Mapped contigs
+         fCMapped.write(cMap.name+'\t'+str(len(dContig[cMap.name]))+'\n')
+-        
++
+         feat = SeqFeature.SeqFeature(SeqFeature.FeatureLocation(cMap.start-1,
+                                                                 cMap.end-1),
+                                       id=cMap.name, type='Contig')
+@@ -2246,9 +2246,9 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+         else:
+             feat.qualifiers['colour']='4'
+         feat.qualifiers['method']='CONTIGuator/Blast'
+-        
++
+         MapSeq.features.append(feat)
+-        
++
+         # Other files
+         for cprof in oCFs.profiles:
+             if cprof.name != cMap.name:continue
+@@ -2263,7 +2263,7 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+                                                hit.strand])+
+                                     '\n')
+                     fNSeqContig.write('>'+hit.name+'\n')
+-                    Write80CharFile(fNSeqContig, 
++                    Write80CharFile(fNSeqContig,
+                                     dContig[cprof.name].seq[hit.qstart-1:
+                                                             hit.qend])
+                 # Write details and sequences of aligned regions
+@@ -2279,12 +2279,12 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+                                     '\n')
+                     # Write contig hits
+                     fASeqContig.write('>'+hit.name+'\n')
+-                    Write80CharFile(fASeqContig, 
++                    Write80CharFile(fASeqContig,
+                                     dContig[cprof.name].seq[hit.qstart-1:
+                                                             hit.qend])
+                     # Write contig hits
+                     fASeqRef.write('>'+hit.name+'\n')
+-                    Write80CharFile(fASeqRef, 
++                    Write80CharFile(fASeqRef,
+                                     seqRef.seq[hit.sstart-1:
+                                                hit.send])
+             for hit in cprof.getHits():
+@@ -2302,7 +2302,7 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+                             hit.name+' '+
+                             str(hit.sstart)+' '+
+                             str(hit.send)+' unknown NONE\n')
+-            
++
+                 if cprof.getStrand() == '+':
+                     featloc = SeqFeature.FeatureLocation(cMap.start-1+hit.qstart-1,
+                                                         cMap.start-1+hit.qend-1)
+@@ -2310,7 +2310,7 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+                     featloc = SeqFeature.FeatureLocation(
+                                             cMap.start-1 + (cprof.length - hit.qend-1),
+                                             cMap.start-1 + (cprof.length - hit.qstart-1))
+-                
++
+                 subfeat = SeqFeature.SeqFeature(featloc,
+                                       id=hit.name, type='Hit')
+                 subfeat.qualifiers['systematic_id']=hit.name
+@@ -2320,9 +2320,9 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+                     subfeat.strand = -1
+                 subfeat.qualifiers['colour']='2'
+                 subfeat.qualifiers['method']='CONTIGuator/Blast'
+-                
++
+                 #MapSeq.features.append(subfeat)
+-                
++
+                 subfeatRef = SeqFeature.SeqFeature(SeqFeature.FeatureLocation(
+                                                                 hit.sstart-1,
+                                                                 hit.send),
+@@ -2335,7 +2335,7 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+                 subfeatRef.qualifiers['colour']='2'
+                 subfeatRef.qualifiers['method']='CONTIGuator/Blast'
+                 seqRef.features.append(subfeatRef)
+-        
++
+         # PseudoContig fasta file
+         if bStart:
+             if cMap.strand == '+':
+@@ -2352,13 +2352,13 @@ def WriteMap(ContigsMap,sContig,sRef,oCFs,bMoreOutputs,iNumN,mylog):
+             PContig += str(dContig[cMap.name].seq)
+         else:
+             PContig += str(dContig[cMap.name].seq.reverse_complement())
+-    
++
+     # Write the fasta to file
+     fAlterPC = open(sAlterPC, 'w')
+     fAlterPC.write('>'+PName+'\n')
+     Write80CharFile(fAlterPC, PContig)
+     fAlterPC.close()
+-    
++
+     # Write the embl files
+     MapSeq.seq = Seq(PContig,Alphabet.IUPAC.IUPACUnambiguousDNA())
+     SeqIO.write([MapSeq],open(sePC,'w'),'embl')
+@@ -2389,9 +2389,9 @@ def ManualACT(name, sRef, sPC, sCrunch, outdir, mylog):
+     from Bio import SeqIO
+     from reportlab.lib import colors
+     from reportlab.lib.units import cm
+-    
++
+     genomes = [sRef, sPC]
+-    
++
+     # Prepare the diagram
+     gd_diagram = Diagram(name, track_size=0.10, circular=False)
+     tracks = dict()
+@@ -2422,12 +2422,12 @@ def ManualACT(name, sRef, sPC, sCrunch, outdir, mylog):
+         if s_start > s_end:
+             flip = not flip
+             s_start, s_end = s_end, s_start
+-        
++
+         # Set the transparency value for the hit
+         score = float(parts[0])/150
+         # Add more transparency for the tracks hit
+         score1 = float(parts[0])/500
+-        
++
+         hit_track = colors.Color(1, 0, 0, alpha=score1)
+         if flip:
+             c = colors.Color(0, 0, 1, alpha=score)
+@@ -2441,7 +2441,7 @@ def ManualACT(name, sRef, sPC, sCrunch, outdir, mylog):
+                                                  color=hit_track, border=b)
+         gd_diagram.cross_track_links.append(CrossLink(q_feature, s_feature, c, b))
+     handle.close()
+-    
++
+     # Add the hits, the contigs and the PCR products
+     for f in genomes:
+         record = records[f]
+@@ -2493,7 +2493,7 @@ def ManualACT(name, sRef, sPC, sCrunch, outdir, mylog):
+                 orientation="landscape", pagesize=(width*cm,20*cm))
+     path = os.path.join(outdir, name)
+     gd_diagram.write(path + ".pdf", "PDF")
+-    
++
+     sys.stdout.write(strftime("%H:%M:%S")+
+             ColorOutput(' Generated a manual ACT map %s\n'%(path+'.pdf'),'DEV'))
+     mylog.WriteLog('INF','Generated a manual ACT map %s'%(path+'.pdf'))
+@@ -2505,25 +2505,25 @@ def CheckHit(hit):
+ 
+     queryalign = hit.query_end - hit.query_start
+     subjctalign = hit.subjct_end - hit.subjct_start
+-    
+-    if (queryalign >= hit.align_len * relativealign[1] or 
++
++    if (queryalign >= hit.align_len * relativealign[1] or
+         queryalign <=  hit.align_len * relativealign[0]):
+         return False
+-    if (subjctalign >= hit.align_len * relativealign[1] or 
++    if (subjctalign >= hit.align_len * relativealign[1] or
+         subjctalign <=  hit.align_len * relativealign[0]):
+         return False
+-    
++
+     if hit.gaps < gaps and hit.mismatches < mismatches:
+         return True
+     else:
+         return False
+-    
++
+ def BlastOverlap(previous, contig, border, mylog):
+     # Files
+     before = 'before.fna'
+     after = 'after.fna'
+     xml = 'overlap.xml'
+-    
++
+     # Save the sequences
+     fbefore = open(before,'w')
+     fbefore.write('>before\n%s'%previous.seq)
+@@ -2531,7 +2531,7 @@ def BlastOverlap(previous, contig, border, mylog):
+     fafter = open(after,'w')
+     fafter.write('>after\n%s'%contig.seq)
+     fafter.close()
+-    
++
+     # 3- Blast them
+     blaster = Blast(mylog)
+     blaster.FillBlastPar(before, out=xml, evalue=1e-5,
+@@ -2548,11 +2548,11 @@ def BlastOverlap(previous, contig, border, mylog):
+         sys.stdout.write(strftime("%H:%M:%S")+
+              ColorOutput(' Parse blast error, skipping overlap check\n','WRN'))
+         return
+-    
++
+     results = blaster.GetAllQueryHits()
+-    
++
+     overlap = False
+-    
++
+     for q in results:
+         for hit in results[q]:
+             if not CheckHit(hit):
+@@ -2565,17 +2565,17 @@ def BlastOverlap(previous, contig, border, mylog):
+             elif previous.strand == '+' and contig.strand == '-':
+                 if ( (len(previous) - hit.query_end  < border)
+                     and (len(contig) - hit.subjct_end < border )):
+-                    
++
+                     overlap = True
+             elif previous.strand == '-' and contig.strand == '+':
+                 if ( (hit.query_start - 1 < border)
+                     and (hit.subjct_start - 1 < border )):
+-                    
++
+                     overlap = True
+             elif previous.strand == '-' and contig.strand == '-':
+                 if ( (hit.query_start - 1 < border)
+                     and (len(contig) - hit.subjct_end < border )):
+-                    
++
+                     overlap = True
+             if overlap:
+                 break
+@@ -2586,12 +2586,12 @@ def BlastOverlap(previous, contig, border, mylog):
+         previous.right = True
+         contig.overlap = True
+         contig.left = True
+-        
++
+     # Clean-up
+     os.remove(before)
+     os.remove(after)
+     os.remove(xml)
+-    
++
+     return overlap
+ 
+ def CheckOverlap(CMap, mylog):
+@@ -2602,13 +2602,13 @@ def CheckOverlap(CMap, mylog):
+     mylog.WriteLog('INF', 'Checking contigs overlap')
+     sys.stdout.write(strftime("%H:%M:%S")+
+                         ' Checking contigs overlap\n')
+-    
++
+     # Bases near the border of the contig that can be out of the alignment
+     border = 100
+-    
++
+     # Counter
+     overlaps = 0
+-    
++
+     bStart = True
+     for contig in CMap:
+         if bStart:
+@@ -2617,19 +2617,19 @@ def CheckOverlap(CMap, mylog):
+         previous = CMap[CMap.index(contig) - 1]
+         if BlastOverlap(previous, contig, border, mylog):
+             overlaps += 1
+-            
++
+     # Last contig overlap with first one (only if they are different :))
+     if contig.name != CMap[0].name:
+         if BlastOverlap(contig, CMap[0], border, mylog):
+             overlaps += 1
+-    
++
+     if overlaps > 0:
+         sys.stdout.write(strftime("%H:%M:%S")+
+              ColorOutput(' %d contig overlap(s) were found\n'%overlaps,'DEV'))
+     else:
+         sys.stdout.write(strftime("%H:%M:%S")+
+              ' No contig overlaps were found\n')
+-    
++
+     return
+ 
+ def Mapper(sContig,sRef,oCFs,bNoN,iNumN,mylog):
+@@ -2639,18 +2639,18 @@ def Mapper(sContig,sRef,oCFs,bNoN,iNumN,mylog):
+     sys.stdout.write(strftime("%H:%M:%S")+
+                         ' Generating the map for reference: '+
+                         sRef+'\n')
+-    
++
+     # Compute the reference length
+     from Bio import SeqIO
+     fReference = open(sRef, 'r')
+     oRef = SeqIO.parse(fReference, 'fasta').next()
+     iRefLen = len(oRef)
+     mylog.WriteLog('INF',sRef+' length: '+str(iRefLen))
+-    
++
+     # Take the profiles, tile them and create a first raw map
+-    
++
+     # TODO: what if a contig is a lot scattered?
+-    
++
+     ContigsMap = []
+     for cprof in oCFs.profiles:
+         if cprof.target == oCFs.refNames[sRef]:
+@@ -2684,16 +2684,16 @@ def Mapper(sContig,sRef,oCFs,bNoN,iNumN,mylog):
+                            end, cprof.getStrand(), cprof.seq)
+             ContigsMap.append(cMap)
+     ContigsMap = sorted(ContigsMap, key=lambda cMap: cMap.start)
+-    
++
+     # If empty, flag it and return
+     if len(ContigsMap) == 0:
+         oCFs.setNoMap(sRef)
+         return
+-    
++
+     # TODO: What if a contig is sinked into another one?
+-    
++
+     LogMap(ContigsMap,'Start',mylog)
+-    
++
+     # Correct the map:
+     # 1- Trim the first item (and the others)
+     # 2- Separate the overlapping contigs
+@@ -2709,9 +2709,9 @@ def Mapper(sContig,sRef,oCFs,bNoN,iNumN,mylog):
+             cMap.start += slideMap
+             cMap.end += slideMap
+     ContigsMap = sorted(ContigsMap, key=lambda cMap: cMap.start)
+-    
++
+     LogMap(ContigsMap,'Trimmed',mylog)
+-    
++
+     bStart = True
+     for cMap in ContigsMap:
+         if bStart:
+@@ -2732,9 +2732,9 @@ def Mapper(sContig,sRef,oCFs,bNoN,iNumN,mylog):
+                 cOther.start += slideMap
+                 cOther.end += slideMap
+     ContigsMap = sorted(ContigsMap, key=lambda cMap: cMap.start)
+-    
++
+     LogMap(ContigsMap,'Overlap',mylog)
+-    
++
+     bStart = True
+     for cMap in ContigsMap:
+         if bStart:
+@@ -2754,13 +2754,13 @@ def Mapper(sContig,sRef,oCFs,bNoN,iNumN,mylog):
+                 cOther.start -= slideMap
+                 cOther.end -= slideMap
+     ContigsMap = sorted(ContigsMap, key=lambda cMap: cMap.start)
+-    
++
+     LogMap(ContigsMap,'Final',mylog)
+-    
++
+     mylog.WriteLog('INF', 'Mapped: '+str(len(ContigsMap))+' contigs')
+     sys.stdout.write(strftime("%H:%M:%S")+
+                 ' Mapped: '+str(len(ContigsMap))+' contigs\n')
+-    
++
+     # Return the ordered map for further analysis
+     return ContigsMap
+ 
+@@ -2807,7 +2807,7 @@ def AbacasPrimer3Parse(sFile,sFasta):
+     '''
+     from Bio import SeqIO
+     seq = SeqIO.parse(open(sFasta),'fasta').next()
+-   
++
+     # Check perimer3 version, from version 2.3.x
+     # the primer sequence is in another field
+     p3ver = getPrimer3Version()
+@@ -2828,8 +2828,8 @@ def AbacasPrimer3Parse(sFile,sFasta):
+         if l.count('Primer set for region starting at ') > 0:
+             l = l.replace('Primer set for region starting at ','')
+             iPre = int(l)
+-            left = None 
+-            right = None 
++            left = None
++            right = None
+         elif l.count('1\tLEFT PRIMER') > 0 or l.count('0\tLEFT PRIMER') > 0:
+             l = l.replace('1\tLEFT PRIMER','')
+             l = l.replace('0\tLEFT PRIMER','')
+@@ -2848,7 +2848,7 @@ def AbacasPrimer3Parse(sFile,sFasta):
+             s = l.split(' ')
+             right = Primer(iPre+int(s[0])+1,int(s[1]),float(s[2]),
+                            float(s[3]),s[pseq])
+-        
++
+         if left and right:
+             PP = PrimerProduct(i)
+             PP.setLeftPrimer(left)
+@@ -2858,7 +2858,7 @@ def AbacasPrimer3Parse(sFile,sFasta):
+             i += 1
+             left = None
+             right = None
+-            
++
+     return products
+ 
+ def RemoveInnerPrimers(products,ContigMap,mylog):
+@@ -2866,10 +2866,10 @@ def RemoveInnerPrimers(products,ContigMap,mylog):
+     Removes those primers that are built from Ns regions INSIDE a contig
+     '''
+     toBeRemoved = []
+-    
++
+     LastMap = copy.deepcopy(ContigMap)
+     LastMap.append(ContigMap[0])
+-    
++
+     for p in products:
+         b=0
+         # Cycle through the map
+@@ -2880,14 +2880,14 @@ def RemoveInnerPrimers(products,ContigMap,mylog):
+             except:
+                 break
+             # Is there any product here?
+-            if (p.getLeftPrimer().start < c.end and 
++            if (p.getLeftPrimer().start < c.end and
+                 p.getRightPrimer().start > c1.start):
+                 # Good!
+                 b = 1
+                 break
+         if not b:
+             toBeRemoved.append(p)
+-    
++
+     if len(toBeRemoved) > 1:
+         mylog.WriteLog('INF', 'Removed: '+str(len(toBeRemoved))+
+                        ' inner primers')
+@@ -2896,7 +2896,7 @@ def RemoveInnerPrimers(products,ContigMap,mylog):
+                        ' inner primers\n','WRN'))
+         for p in toBeRemoved:
+             products.remove(p)
+-    
++
+     return products
+ 
+ def WritePrimerProducts(sPC,products,iNumN):
+@@ -2905,9 +2905,9 @@ def WritePrimerProducts(sPC,products,iNumN):
+     '''
+     from Bio import SeqIO
+     from Bio import SeqFeature
+-    
++
+     s=SeqIO.parse(open(sPC),'embl').next()
+-    
++
+     for p in products:
+         # "Last" PCR?
+         if p.getRightPrimer().start > len(s):
+@@ -2941,9 +2941,9 @@ def WritePrimerProducts(sPC,products,iNumN):
+         feat.qualifiers['colour']='1'
+         feat.qualifiers['method']='Abacas/Primer3'
+         s.features.append(feat)
+-    
++
+     SeqIO.write([s],open(sPC,'w'),'embl')
+-            
++
+ def PrimerTable(products,ContigMap,outFile,sPC):
+     '''
+     Opens the Abacas/primer3 output file and generates a table
+@@ -2952,16 +2952,16 @@ def PrimerTable(products,ContigMap,outFile,sPC):
+     Other useful informations will be generated.
+     Thanks to Dr. Lee Katz for the idea
+     '''
+-    
++
+     f = open(outFile,'w')
+     f.write('\t'.join(['Left Contig','Right Contig','Primer ID','Forward Primer',
+                 'Length','Start','Tm',
+                 'GC','Reverse Primer','Length','Start','Tm','GC',
+                 'Estimated Amplicon length','Estimated PCR Product'])+'\n')
+-    
++
+     from Bio import SeqIO
+     s=SeqIO.parse(open(sPC),'embl').next()
+-    
++
+     # Cycle through the map
+     for c in ContigMap:
+         # Get the next item
+@@ -2969,19 +2969,19 @@ def PrimerTable(products,ContigMap,outFile,sPC):
+             c1 = ContigMap[ContigMap.index(c)+1]
+         except:
+             break
+-        
++
+         # Inner PCR primers?
+         for p in products:
+-            if ((p.getLeftPrimer().start >= c.start and 
++            if ((p.getLeftPrimer().start >= c.start and
+                 p.getRightPrimer().start <= c.end) and
+                 not p.getRightPrimer().start > len(s) ):
+-                f.write('\t'.join([c.name, c.name, str(p)]) + '\n') 
++                f.write('\t'.join([c.name, c.name, str(p)]) + '\n')
+         #
+-        
++
+         # Is there any product here?
+         b = False
+         for p in products:
+-            if ((p.getLeftPrimer().start < c.end and 
++            if ((p.getLeftPrimer().start < c.end and
+                 p.getRightPrimer().start > c1.start) and
+                 not p.getRightPrimer().start > len(s) ):
+                 # Good!
+@@ -2992,7 +2992,7 @@ def PrimerTable(products,ContigMap,outFile,sPC):
+             f.write('\t'.join([c.name, c1.name, 'NOT FOUND']) + '\n')
+         else:
+             f.write('\t'.join([c.name, c1.name, str(p)]) + '\n')
+-        
++
+     # "Last" PCR
+     c1 = ContigMap[0]
+     b = False
+@@ -3005,7 +3005,7 @@ def PrimerTable(products,ContigMap,outFile,sPC):
+         f.write('\t'.join([c.name, c1.name, 'NOT FOUND']) + '\n')
+     else:
+         f.write('\t'.join([c.name, c1.name, str(p)]) + '\n')
+-    
++
+     f.close()
+ 
+ def DeleteTemporaryFiles(lStart):
+@@ -3314,7 +3314,7 @@ def RunTBlastN(query,dC,dP,dU,oCFs,options,mylog):
+         from Bio import SeqIO
+         from Bio import SeqFeature
+ 
+-        fname = r+'.reference.fasta'        
++        fname = r+'.reference.fasta'
+         s = SeqIO.parse(open(oCFs.refembl[fname]),'embl').next()
+         i=1
+         for g in dR[r]:
+@@ -3529,7 +3529,7 @@ def WriteConfig(actpath,mylog):
+     config = ConfigParser.RawConfigParser()
+     config.add_section('ACT')
+     config.set('ACT', 'string', actpath)
+-    
++
+     # Write down to file
+     #with open(os.getenv("HOME")+'/.CONTIGuator/CONTIGuator.conf', 'wb') as configfile:
+     #    config.write(configfile)
+@@ -3547,7 +3547,7 @@ def ReadACTConfig(mylog):
+         return config.getstring('ACT', 'string')
+     except:return None
+ #############################################################
+- 
++
+ def SearchForACT(mylog):
+     '''
+     Try to find the ACT executables
+@@ -3556,12 +3556,12 @@ def SearchForACT(mylog):
+     mylog.WriteLog('INF', 'Searching the ACT executable in your system')
+     sys.stdout.write(strftime("%H:%M:%S")+
+                         ' Searching the ACT executable in your system\n')
+-    
++
+     p = subprocess.Popen('locate artemis/act',shell=(sys.platform!="win32"),
+             stdin=subprocess.PIPE,stdout=subprocess.PIPE,
+             stderr=subprocess.PIPE)
+     out = p.communicate()
+-    
++
+     # Is there something?
+     if (out[0]) == '':
+         # No luck!
+@@ -3575,7 +3575,7 @@ def SearchForACT(mylog):
+         sys.stdout.write(strftime("%H:%M:%S")+
+                     ColorOutput(' ACT binary: '+actpath+'\n','DEV'))
+         return actpath
+-    
++
+ def WriteACTLaunchers(actpath,oCFs,prefix,mylog):
+     '''
+     Creates in the base directory an ACT launcher for each reference
+@@ -3583,7 +3583,7 @@ def WriteACTLaunchers(actpath,oCFs,prefix,mylog):
+     mylog.WriteLog('INF', 'Writing the ACT launcher scripts')
+     sys.stdout.write(strftime("%H:%M:%S")+
+                         ' Writing the ACT launcher scripts\n')
+-    
++
+     fout = []
+     for sRef in oCFs.references:
+         if sRef in oCFs.nomap:continue
+@@ -3608,16 +3608,16 @@ def WriteACTLaunchers(actpath,oCFs,prefix,mylog):
+                 stdin=subprocess.PIPE,stdout=subprocess.PIPE,
+                 stderr=subprocess.PIPE)
+         out = p.communicate()
+-        
++
+         # Copy the launcher inside each Map directory
+         shutil.copy(fname,refDir)
+         # Save the file
+         fout.append( (ref,refDir+'/'+fname) )
+-        
++
+         mylog.WriteLog('DEV', refDir+'/'+fname)
+         sys.stdout.write(strftime("%H:%M:%S")+
+                 ColorOutput(' '+ref+' launcher: '+refDir+'/'+fname,'DEV')+'\n')
+-    
++
+     return fout
+ 
+ def PrintStats(oCFs,options,mylog):
+@@ -3665,7 +3665,7 @@ def PrintStats(oCFs,options,mylog):
+     mylog.WriteLog('INF', 'UnMapped contigs: '+str(j)+', '+str(i)+' bp')
+     sys.stdout.write(ColorOutput('UnMapped contigs: ','DEV')+str(j)+', '+
+                      str(i)+' bp\n')
+-    
++
+     sys.stdout.write(ColorOutput('UnMapped categories:\n','DEV'))
+     i=0
+     j=0
+@@ -3761,7 +3761,7 @@ def CONTIGuator(options):
+     # Make a snapshoot of the directory (to cancel the intermediate files)
+     lStart=os.listdir('.')
+     #
+-    
++
+     # Check if we can create "ACT" maps with BioPython
+     bPDF = False
+     if getBioPyVersion() >= 1.59:
+@@ -3770,7 +3770,7 @@ def CONTIGuator(options):
+         sys.stdout.write(strftime("%H:%M:%S")+
+             ColorOutput(' Biopython >= 1.59 is needed to generate PDF maps\n',
+                         'WRN'))
+-    
++
+     # Check the inputs
+     # Is the Contigs file in FASTA?
+     from Bio import SeqIO
+@@ -3780,7 +3780,7 @@ def CONTIGuator(options):
+     for sInFile in options.lReferenceFiles:
+         if len([x for x in SeqIO.parse(open(sInFile), 'fasta')]) == 0:
+             raise ValueError('Reference file (%s) may not be in FASTA format'%sInFile)
+-    
++
+     oCFs = ContigProfiler(options,mylog)
+     if not oCFs:
+         DeleteTemporaryFiles(lStart)
+@@ -3788,19 +3788,19 @@ def CONTIGuator(options):
+                             ColorOutput(' Stopping CONTIGuator\n','WRN'))
+         mylog.WriteLog('INF','Stopping CONTIGuator')
+         sys.exit(0)
+-    
++
+     # Parameters check
+     if options.iNumN < 0:
+         mylog.WriteLog('WRN', 'The gap size should be greater than zero!')
+         sys.stderr.write(strftime("%H:%M:%S")+
+         ColorOutput(' The gap size should be greater than zero!\n','WRN'))
+         options.iNumN = 0
+-    
++
+     dDir = {}
+     for sRef in oCFs.references.keys():
+-        
++
+         # Check if ContigProfiler yielded some results
+-        # Clean up if yes 
++        # Clean up if yes
+         # Create the results directory
+         sRefDir = (options.sPrefix+'Map_'+
+                    sRef.split('/')[-1].replace('_','.').replace('-','.'))
+@@ -3810,7 +3810,7 @@ def CONTIGuator(options):
+         except OSError:pass
+         # Mapper sub-functions
+         CMap = Mapper(options.ContigFile,sRef,oCFs,options.bNoN,options.iNumN,mylog)
+-        
++
+         # Verify if the map contains something
+         if sRef in oCFs.nomap:
+             # Remove the directory and all its content
+@@ -3821,14 +3821,14 @@ def CONTIGuator(options):
+             sys.stdout.write(strftime("%H:%M:%S")+
+                ColorOutput(' Molecule '+sRef+' has no contig mapped to it!\n','WRN'))
+             continue
+-        
++
+         # Check the overlaps between near contigs
+         CheckOverlap(CMap, mylog)
+-        
++
+         oCFs.setMap(sRef, CMap)
+         # Write down the obtained map -- ACT
+         WriteMap(CMap,options.ContigFile,sRef,oCFs,options.manyOutputs,options.iNumN,mylog)
+-        
++
+         dDir[sRef] = []
+         for sF in oCFs.ACT:
+             shutil.copy(sF,sRefDir)
+@@ -3841,7 +3841,7 @@ def CONTIGuator(options):
+         oCFs.setEmblFile(sRef, sRefDir+'/'+oCFs.embl[sRef])
+         oCFs.setPContigFile(sRef, sRefDir+'/'+oCFs.PC[sRef])
+         oCFs.setDir(sRef, sRefDir)
+-        
++
+     if options.bPrimer:
+         for sRef in oCFs.references.keys():
+             if sRef in oCFs.nomap:
+@@ -3865,9 +3865,9 @@ def CONTIGuator(options):
+             PrimerTable(products,oCFs.maps[sRef],'PCRPrimers.tsv',oCFs.embl[sRef])
+             shutil.copy('PCRPrimers.tsv',sRefDir)
+             oCFs.primers[sRef] = sRefDir+'/PCRPrimers.tsv'
+-            
++
+         Notify('PCR primers generation terminated')
+-    
++
+     # Give me some stats...
+     try:
+         PrintStats(oCFs,options,mylog)
+@@ -3891,19 +3891,19 @@ def CONTIGuator(options):
+         mylog.WriteLog('INF', 'Something went wrong in reference proteins utilization, skipping...')
+         sys.stderr.write(strftime("%H:%M:%S")+
+                ColorOutput(' Something went wrong in reference proteins utilization, skipping...\n','WRN'))
+-    
++
+     if bPDF:
+         for sRef in oCFs.references.keys():
+             if sRef in oCFs.nomap:
+                 continue
+-            
++
+             sRefDir = options.sPrefix+'Map_'+sRef.split('/')[-1].replace('_','.').replace('-','.')
+             sRefDir=sRefDir.replace('.reference.fasta','')
+-            
++
+             ManualACT(sRef.replace('.reference.fasta',''), oCFs.refembl[sRef],
+                       oCFs.embl[sRef],
+                       oCFs.crunch[sRef], sRefDir, mylog)
+-    
++
+     # Make the use of ACT slightly easier
+     sys.stdout.write(strftime("%H:%M:%S")+
+            ' Will try to prepare the ACT launchers...\n')
+@@ -3924,7 +3924,7 @@ def CONTIGuator(options):
+             for t in fout:
+                 ref = t[0]
+                 launcher = t[1]
+-                
++
+                 mylog.WriteLog('DEV', 'Opening script: '+ref)
+                 sys.stdout.write(strftime("%H:%M:%S")+
+                         ColorOutput(' Opening map: '+ref
+@@ -3932,7 +3932,7 @@ def CONTIGuator(options):
+                 if len(fout) != currmap:
+                     sys.stdout.write(strftime("%H:%M:%S")+
+                         ' Close ACT to open the next map\n')
+-                
++
+                 p = subprocess.Popen(launcher,
+                      shell=(sys.platform!="win32"),
+                      stdin=subprocess.PIPE,stdout=subprocess.PIPE,
+@@ -3941,12 +3941,12 @@ def CONTIGuator(options):
+                 currmap +=1
+         else:
+             sys.stdout.write(
+-                ColorOutput('To open the ACT maps you can:\n' 
++                ColorOutput('To open the ACT maps you can:\n'
+                     +'\tRun the scripts in each "Maps_" directory\n'
+                     +'\tRe-run with the -l option\n'
+                     +'\tOpen the ACT maps manually\n'
+                     ,'DEV'))
+-            
++
+             if bPDF:
+                 sys.stdout.write(
+             ColorOutput('\tOr you can use the pdf maps in each "Maps_" directory\n'
+@@ -3960,7 +3960,7 @@ def CONTIGuator(options):
+                 +'\tRe-run with -a option indicating the ACT binary location\n'
+                 +'\tOpen the ACT maps manually\n','WRN'))
+         #
+-        
++
+     # End!
+ 
+     # Delete the unnecessary files...
+@@ -3976,11 +3976,11 @@ def main():
+         pass
+     else:
+         (options, args) = getOptions()
+-        
++
+         # Message
+         sys.stdout.write(strftime("%Y-%m-%d %H:%M:%S")+
+             ColorOutput(' Starting CONTIGuator\n','IMP'))
+-        
++
+         if not options.debug:
+             try:
+                 CONTIGuator(options)
+-- 
+2.1.3.36.g8e36a6d
+
