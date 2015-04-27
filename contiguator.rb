@@ -6,7 +6,7 @@ class Contiguator < Formula
 
   patch do
     url "https://raw.githubusercontent.com/mscook/homebrew-BanzaiNGS/master/patches/CONTIGuator-Declare-python-env-properly.patch"
-    sha256 "3a1749e8d7fa9112ca54f02440bb71c1b498f7dcb514d6508e1ac3a6e911b8a0"
+    sha256 "9bb5b2ac05890a373b910e1fd962cf9bf522de5b81d14a331d6044f85fb23168"
   end
 
 
