@@ -50,6 +50,7 @@ class BanzaiNgs < Formula
   depends_on "prokka-banzai"
   depends_on "ratt"
   depends_on "geneprimp"
+  depends_on "emboss"
   #depends_on "interproscan"
 
   #########################
