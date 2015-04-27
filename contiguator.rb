@@ -32,9 +32,10 @@ class Contiguator < Formula
       end
     end
     
-    #system "mkdir bin"
-    #system "mv CONTIGuator.py bin"
-    bin.install_symlink "CONTIGuator.py" => "CONTIGuator"
+    system "mkdir bin"
+    system "cp CONTIGuator.py bin"
+    system "mv CONTIGuator.py bin/CONTIGuator"
+    #bin.install_symlink "CONTIGuator.py" => "CONTIGuator"
     prefix.install Dir["*"]
   end
 
