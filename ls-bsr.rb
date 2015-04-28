@@ -3,7 +3,7 @@ class LsBsr < Formula
   url "https://github.com/jasonsahl/LS-BSR/archive/master.zip"
   # Version, M.DDYY of clone
   version "1.4.2815"
-  sha1 "4077a992dfc519f3bd6a73fe76e4b90eb5ccc705"
+  sha1 "0d38b6d95102e3c0ad7e7f5e60064acaa78b5e87"
 
   depends_on "blast-legacy"
   depends_on "blat"
