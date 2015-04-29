@@ -1,4 +1,5 @@
-  homepage "https://code.google.com/p/ea-utils/"
+ class EaUtils < Formula
+ homepage "https://code.google.com/p/ea-utils/"
   url "https://ea-utils.googlecode.com/files/ea-utils.1.1.2-537.tar.gz"
   version "1.1.2-537"
   sha1 "688bddb1891ed186be0070d0d581816a35f7eb4e"
