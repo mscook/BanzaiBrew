@@ -41,6 +41,7 @@ class BanzaiNgs < Formula
   ##################
   # WGA dependencies
   ##################
+  # Still needs work - mugsy
   depends_on "mugsy"
   depends_on "gblocks"
 
@@ -48,7 +49,9 @@ class BanzaiNgs < Formula
   # Annotation dependencies
   #########################
   depends_on "prokka-banzai"
+  # Still needs work - ratt
   depends_on "ratt"
+  # Still needs work - geneprimp
   depends_on "geneprimp"
   depends_on "emboss"
   #depends_on "interproscan"
