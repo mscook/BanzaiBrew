@@ -52,7 +52,7 @@ class BanzaiNgs < Formula
   # Still needs work - ratt
   depends_on "ratt"
   # Still needs work - geneprimp
-  depends_on "geneprimp"
+  #depends_on "geneprimp"
   depends_on "emboss"
   #depends_on "interproscan"
 
