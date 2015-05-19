@@ -50,7 +50,7 @@ class BanzaiNgs < Formula
   #########################
   depends_on "prokka-banzai"
   # Still needs work - ratt
-  depends_on "ratt"
+  # depends_on "ratt"
   # Still needs work - geneprimp
   #depends_on "geneprimp"
   depends_on "emboss"
@@ -59,11 +59,10 @@ class BanzaiNgs < Formula
   #########################
   # Ordering dependencies
   #########################
-  depends_on "mauve"
-  depends_on "abacas"
-  depends_on "contiguator"
-
-
+  # TODO
+  #depends_on "mauve"
+  #depends_on "abacas"
+  #depends_on "contiguator"
 
 
   def install
