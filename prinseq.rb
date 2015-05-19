@@ -16,7 +16,7 @@ class Prinseq < Formula
   depends_on "Cwd" => :perl
   depends_on "JSON" => :perl
   depends_on "Cairo"  => :perl
-  depends_on "Statistics::PCA" => :perl
+  #depends_on "Statistics::PCA" => :perl
   depends_on "MIME::Base64" => :perl
 
   def install
@@ -35,7 +35,8 @@ class Prinseq < Formula
     <<-EOS.undent
       NOTES:
         * CPAN installation of cairo perl seems to fail with brew cairo. Solved using 'sudo apt-get install libcairo2-dev'
-        * The PRINSEQ Perl executables end up with .pl extensions 
+        * The PRINSEQ Perl executables end up with .pl extensions
+        * We don't do PCA version (perl is shit)
     EOS
   end
 
